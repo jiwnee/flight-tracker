@@ -1,5 +1,4 @@
 .env
-config.json
 state.json
 
 # Python
