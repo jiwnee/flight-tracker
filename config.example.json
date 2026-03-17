@@ -1,0 +1,9 @@
+{
+  "origin": "BIO",
+  "destination": "OPO",
+  "target_date": "2026-06-29",
+  "departure_before": "15:00",
+  "type": "2",
+  "stops": "1",
+  "discord_enabled": true
+}

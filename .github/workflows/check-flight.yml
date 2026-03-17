@@ -1,0 +1,47 @@
+name: BIO→OPO 직항 모니터링
+
+on:
+  schedule:
+    # 매일 01:00, 13:00 UTC (한국 10:00, 22:00 KST)
+    - cron: "0 1,13 * * *"
+  workflow_dispatch:  # 수동 실행 버튼 (테스트용)
+
+jobs:
+  check-flight:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: Python 설정
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 의존성 설치
+        run: pip install requests
+
+      # 이전 실행의 state.json 복원
+      - name: 상태 파일 복원
+        uses: actions/cache@v4
+        with:
+          path: state.json
+          key: flight-state-${{ runner.os }}
+          restore-keys: |
+            flight-state-
+
+      - name: 직항 확인 실행
+        env:
+          SERPAPI_KEY: ${{ secrets.SERPAPI_KEY }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+        run: python check_flight.py --force
+
+      # 최신 state.json 저장 (다음 실행에서 복원)
+      - name: 상태 파일 저장
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: state.json
+          key: flight-state-${{ runner.os }}-${{ github.run_id }}
