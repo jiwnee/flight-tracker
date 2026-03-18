@@ -5,7 +5,7 @@ Discord + ntfy로 즉시 알림을 보냅니다.
 
 - **데이터 소스**: SerpApi Google Flights
 - **기본 설정**: BIO(빌바오) → OPO(포르투), 2026-06-29, 15:00 이전 출발, 직항만
-- **실행 주기**: 매일 01:00, 13:00 UTC (KST 10:00, 22:00)
+- **실행 주기**: .github/workflows/check-flight.yml 설정 파일 확인
 - **알림 방식**: GitHub Actions에서 `--force` 모드로 실행 (매 실행마다 알림 발송)
 - **설정 파일**: `config.json`으로 노선/조건 변경 가능
 
